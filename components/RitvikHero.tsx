@@ -9,97 +9,82 @@ export default function RitvikHero() {
   const [isComplete, setIsComplete] = useState(false)
   const [currentTitleIndex, setCurrentTitleIndex] = useState(0)
 
+  // Array of titles to rotate through
   const titles = [
-    "AI ENGINEER",
     "FULL STACK DEVELOPER",
+    "AI ENGINEER",
     "CLOUD ARCHITECT",
     "ML SPECIALIST",
-    "REACT DEVELOPER",
-    "SOFTWARE ENGINEER",
+    "SOFTWARE ENGINEER"
   ]
 
   useEffect(() => {
     const handleScroll = () => {
       const scrolled = window.scrollY
       const viewportHeight = window.innerHeight
+      // Progress from 0 to 1 over 1.5 viewport heights of scrolling
       const newProgress = Math.min(scrolled / (viewportHeight * 1.5), 1)
       setProgress(newProgress)
+      
+      // Once animation is complete and user scrolls past, hide the fixed hero
       if (scrolled > viewportHeight * 2) {
         setIsComplete(true)
       } else {
         setIsComplete(false)
       }
     }
+
     window.addEventListener('scroll', handleScroll)
-    handleScroll()
+    handleScroll() // Initial call
+
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Rotate through titles every 3.5 seconds
+  // Rotate through titles every 4 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentTitleIndex((prev) => (prev + 1) % titles.length)
-    }, 3500)
+      setCurrentTitleIndex((prevIndex) => (prevIndex + 1) % titles.length)
+    }, 4000) // Change every 4 seconds
+
     return () => clearInterval(interval)
   }, [titles.length])
 
+  const domains = [
+    { name: "React.js", color: "#61DAFB" },
+    { name: "Next.js", color: "#ffffff" },
+    { name: "Node.js", color: "#339933" },
+    { name: "MongoDB", color: "#47A248" },
+    { name: "Python", color: "#3776AB" },
+    { name: "AI/ML", color: "#FF6F00" },
+    { name: "AWS", color: "#FF9900" },
+    { name: "Docker", color: "#2496ED" },
+  ]
+
   const revealContent = (
-    <div className="w-full h-full flex flex-col items-center justify-center px-8 gap-6">
-      {/* Rotating title with stroke animation */}
+    <div className="w-full h-full flex items-center justify-center px-8">
       <StrokeText
-        key={currentTitleIndex}
+        key={currentTitleIndex} // Force re-render and re-animate when title changes
         text={titles[currentTitleIndex]}
-        strokeColor="#FF6B2B"
-        fillColor="#0A0A14"
+        strokeColor="#D93644"
+        fillColor="#33190F"
         strokeWidth={2}
-        drawDuration={1.8}
-        fillDelay={0.25}
-        stagger={0.07}
+        drawDuration={2}
+        fillDelay={0.3}
+        stagger={0.08}
         ease="power2.out"
         trigger="mount"
         fillMode="wipe"
-        fontSize={44}
+        fontSize={48}
         fontWeight={900}
         letterSpacing={6}
         reverse={false}
       />
-
-      {/* Subtitle indicators */}
-      <div className="flex items-center gap-3">
-        {titles.map((_, i) => (
-          <div
-            key={i}
-            className="rounded-full transition-all duration-500"
-            style={{
-              width: i === currentTitleIndex ? 24 : 6,
-              height: 6,
-              background: i === currentTitleIndex ? '#FF6B2B' : 'rgba(255,107,43,0.3)',
-              boxShadow: i === currentTitleIndex ? '0 0 10px rgba(255,107,43,0.7)' : 'none',
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Stats row */}
-      <div className="flex gap-8 mt-2">
-        {[
-          { val: '20+',  label: 'Live Sites' },
-          { val: '400+', label: 'DSA Solved' },
-          { val: '200+', label: 'App Downloads' },
-        ].map((s) => (
-          <div key={s.label} className="text-center">
-            <div className="text-2xl font-black" style={{ color: '#FF6B2B' }}>{s.val}</div>
-            <div className="text-xs font-semibold" style={{ color: 'rgba(253,246,236,0.6)' }}>{s.label}</div>
-          </div>
-        ))}
-      </div>
     </div>
   )
 
   return (
     <>
-      <div
-        id="home"
+      <div 
         className={`fixed top-0 left-0 w-full h-screen transition-opacity duration-500 ${
           isComplete ? 'opacity-0 pointer-events-none' : 'opacity-100 z-10'
         }`}
@@ -107,19 +92,19 @@ export default function RitvikHero() {
         <TigerTearReveal
           word="RITVIK"
           tagline="GANUGAPENTA"
-          ink="#FF6B2B"
-          paper="#0A0A14"
-          taglineColor="#2563EB"
-          eyeColor="#f59e0b"
-          furColor="#FF6B2B"
+          ink="#D93644"
+          paper="#F5F0E6"
+          taglineColor="#D9832C"
+          eyeColor="#f0a526"
+          furColor="#d9832c"
           height="100vh"
           progress={progress}
           hint={!isComplete}
           revealContent={revealContent}
         />
       </div>
-
-      {/* Scroll spacer */}
+      
+      {/* Invisible spacer to create scroll distance */}
       <div className="h-[250vh]" />
     </>
   )

@@ -104,14 +104,16 @@ export default function Projects() {
   }))
 
   return (
-    <section id="projects" className="py-24 relative section-base overflow-hidden" style={{ background: 'rgba(10,5,20,0.85)' }}>
-      {/* Canvas blur overlay */}
-      <div className="section-blur-overlay" />
-      {/* Subtle dot pattern */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none" style={{
-        backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,107,43,0.4) 1px, transparent 0)',
-        backgroundSize: '32px 32px', zIndex: 1,
-      }} />
+    <section id="projects" className="py-20 relative bg-[#8B1E2F] overflow-hidden">
+      {/* Glassmorphism overlay effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/30 pointer-events-none"></div>
+      <div className="absolute inset-0 backdrop-blur-[1px] pointer-events-none"></div>
+
+      {/* Subtle pattern overlay */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none" style={{
+        backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(0,0,0,0.15) 1px, transparent 0)',
+        backgroundSize: '32px 32px'
+      }}></div>
 
       {/* Project Modal */}
       <ProjectModal
@@ -127,15 +129,11 @@ export default function Projects() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-4"
-            style={{ background: 'rgba(255,107,43,0.12)', border: '1px solid rgba(255,107,43,0.3)', color: '#FF9A6C' }}>
-            What I've Built
-          </span>
-          <h2 className="text-4xl md:text-5xl font-black mb-4 text-cream">
-            Featured <span className="gradient-text">Projects</span>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+            Featured <span className="text-cream">Projects</span>
           </h2>
-          <p className="text-cream/60 text-lg">
-            Explore my work in 3D — Drag to rotate and discover
+          <p className="text-cream text-lg">
+            Explore my work in 3D - Drag to rotate and discover
           </p>
         </motion.div>
 
@@ -146,15 +144,13 @@ export default function Projects() {
           transition={{ duration: 1, delay: 0.2 }}
           className="mb-8"
         >
-          <div className="h-[600px] rounded-3xl overflow-hidden border-2 shadow-2xl relative"
-            style={{ background: '#0A0A14', borderColor: 'rgba(255,107,43,0.25)', boxShadow: '0 0 60px rgba(255,107,43,0.1)' }}>
+          <div className="h-[600px] rounded-3xl overflow-hidden bg-cream border-4 border-cream/80 shadow-2xl shadow-black/40 relative">
             {/* Animated Drag Instruction Hint */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="absolute top-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none flex items-center gap-2.5 px-5 py-2.5 rounded-full shadow-xl backdrop-blur-md text-xs md:text-sm font-semibold tracking-wide"
-              style={{ background: 'rgba(255,107,43,0.2)', border: '1px solid rgba(255,107,43,0.4)', color: '#FDF6EC' }}
+              className="absolute top-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none flex items-center gap-2.5 bg-[#8B1E2F]/90 text-cream px-5 py-2.5 rounded-full shadow-xl backdrop-blur-md border border-cream/40 text-xs md:text-sm font-semibold tracking-wide"
             >
               <motion.span
                 animate={{ x: [-8, 8, -8] }}
@@ -163,13 +159,13 @@ export default function Projects() {
               >
                 👈 ✋ 👉
               </motion.span>
-              <span>Click &amp; Drag to Rotate 3D Globe</span>
+              <span>Click & Drag to Rotate 3D Globe</span>
             </motion.div>
 
             <InfiniteMenu
               items={infiniteMenuItems}
               scale={1}
-              backgroundColor="#0A0A14"
+              backgroundColor="#F5F0E6"
             />
           </div>
           <p className="text-center text-cream mt-4 text-sm">
