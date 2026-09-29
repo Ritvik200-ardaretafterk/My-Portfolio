@@ -73,7 +73,7 @@ class Face {
   a: number;
   b: number;
   c: number;
-  
+
   constructor(a: number, b: number, c: number) {
     this.a = a;
     this.b = b;
@@ -85,7 +85,7 @@ class Vertex {
   position: vec3;
   normal: vec3;
   uv: vec2;
-  
+
   constructor(x: number, y: number, z: number) {
     this.position = vec3.fromValues(x, y, z);
     this.normal = vec3.create();
@@ -118,7 +118,7 @@ class Geometry {
   subdivide(divisions = 1) {
     const midPointCache: Record<string, number> = {};
     let f = this.faces;
-    
+
     for (let div = 0; div < divisions; ++div) {
       const newFaces = new Array(f.length * 4);
       f.forEach((face, ndx) => {
@@ -232,7 +232,7 @@ function createShader(gl: WebGL2RenderingContext, type: number, source: string) 
 function createProgram(gl: WebGL2RenderingContext, shaderSources: string[], transformFeedbackVaryings?: string[] | null, attribLocations?: Record<string, number>) {
   const program = gl.createProgram();
   if (!program) return null;
-  
+
   [gl.VERTEX_SHADER, gl.FRAGMENT_SHADER].forEach((type, ndx) => {
     const shader = createShader(gl, type, shaderSources[ndx]);
     if (shader) gl.attachShader(program, shader);
@@ -261,20 +261,20 @@ function createProgram(gl: WebGL2RenderingContext, shaderSources: string[], tran
 function makeVertexArray(gl: WebGL2RenderingContext, bufLocNumElmPairs: [WebGLBuffer, number, number][], indices?: Uint16Array) {
   const va = gl.createVertexArray();
   gl.bindVertexArray(va);
-  
+
   for (const [buffer, loc, numElem] of bufLocNumElmPairs) {
     if (loc === -1) continue;
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.enableVertexAttribArray(loc);
     gl.vertexAttribPointer(loc, numElem, gl.FLOAT, false, 0, 0);
   }
-  
+
   if (indices) {
     const indexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
   }
-  
+
   gl.bindVertexArray(null);
   return va;
 }
@@ -294,7 +294,11 @@ function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement) {
 function makeBuffer(gl: WebGL2RenderingContext, sizeOrData: number | Float32Array, usage: number) {
   const buf = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-  gl.bufferData(gl.ARRAY_BUFFER, sizeOrData, usage);
+  if (typeof sizeOrData === 'number') {
+    gl.bufferData(gl.ARRAY_BUFFER, sizeOrData, usage);
+  } else {
+    gl.bufferData(gl.ARRAY_BUFFER, sizeOrData, usage);
+  }
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
   return buf;
 }
@@ -485,10 +489,10 @@ class InfiniteGridMenu {
   constructor(canvas: HTMLCanvasElement, items: any[], onActiveItemChange: (index: number) => void, onMovementChange: (isMoving: boolean) => void, onInit?: ((sketch: InfiniteGridMenu) => void) | null, scale = 1.0) {
     this.canvas = canvas;
     this.items = items || [];
-    this.onActiveItemChange = onActiveItemChange || (() => {});
-    this.onMovementChange = onMovementChange || (() => {});
+    this.onActiveItemChange = onActiveItemChange || (() => { });
+    this.onMovementChange = onMovementChange || (() => { });
     this.scaleFactor = scale;
-    
+
     this.camera = {
       matrix: mat4.create(),
       near: 0.1,
@@ -503,7 +507,7 @@ class InfiniteGridMenu {
         inversProjection: mat4.create()
       }
     };
-    
+
     this.init(onInit);
   }
 
@@ -734,7 +738,8 @@ class InfiniteGridMenu {
   }
 
   updateProjectionMatrix(gl: WebGL2RenderingContext) {
-    this.camera.aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    const canvas = gl.canvas as HTMLCanvasElement;
+    this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
     const height = this.SPHERE_RADIUS * 0.35;
     const distance = this.camera.position[2];
 
@@ -864,13 +869,13 @@ export default function InfiniteMenu({ items = [], scale = 1.0, backgroundColor 
 
   const handleButtonClick = () => {
     if (!activeItem) return;
-    
+
     // If there's an onClick handler, call it
     if (activeItem.onClick && typeof activeItem.onClick === 'function') {
       activeItem.onClick();
       return;
     }
-    
+
     // Otherwise, handle link navigation
     if (activeItem.link) {
       if (activeItem.link.startsWith('http')) {
